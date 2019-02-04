@@ -1,0 +1,72 @@
+<h1>Consultas</h1>
+
+<% if @error_message != nil %>
+<div id="error_explanation">
+ <%= @error_message %>
+</div>
+<%end%>
+
+<%= search_form_for @q, url: "/agendar", class: 'search_form' do |f| %>
+<table>
+  <tr>
+    <td>
+      <div class="field">
+      <%= label_tag :estado %>
+      <%= collection_select(:estados, :id, Estado.all, :id, :nome, {:prompt => true})  %>
+      </div>
+    </td>
+    <td>
+      <div class="field">
+      <%= f.label :local_cidade_id_eq %>
+      <%= f.collection_select(:local_cidade_id_eq, Cidade.where(:estado_id => @estados).order(:nome), :id, :nome,  {:prompt => true}) %>
+      </div>
+    </td>
+  </tr>
+  <tr>
+<td>
+  <div class="field">
+    <%= f.label :especialidade_id %>
+    <% f.search_field :especialidade_id_eq %>
+    <%= f.collection_select :especialidade_id_eq, Especialidade.all, :id, :Nome, include_blank: true %>
+  </div>
+</td>
+<td>
+    <div class="field">
+      <%= f.label "Data - a partir de: "%>
+      <% f.search_field :data_desejada_gteq %>
+      <%= f.date_field :data_desejada_gteq %>
+    </div>
+</td>
+<td>
+    <div class="field">
+      <%= f.label "Data - até:" %>
+      <% f.search_field :data_desejada_lteq %>
+      <%= f.date_field :data_desejada_lteq %>
+    </div>
+</td>
+  </tr>
+  <tr>
+<td>
+  <%= f.submit 'Buscar' %>
+</td>
+  </tr>
+
+</table>
+<div>
+
+<% end%>
+<% if @agendamentos != nil %>
+  <% @agendamentos.each do |agendamento| %>
+
+  <div class ="w3-panel w3-green w3-card-4">
+  <p> Local: <%= agendamento.local.nome %> </p>
+  <p> Medico: <%= agendamento.medico.nome %> </p>
+  <p> Especialidade: <%= agendamento.especialidade.Nome %> </p>
+  <p> CRM: <%= agendamento.medico.crm %> </p>
+  <p> DATA: <%= agendamento.data %> </p>
+  <p><%= link_to "Marcar Consulta", realizar_agendamento_path(:usuario_id => current_usuario.id, :agendamento_id=> agendamento.id ),  method: :post %><p>
+  </div>
+  <% end %>
+
+<%end%>
+</div>

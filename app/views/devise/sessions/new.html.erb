@@ -1,0 +1,34 @@
+<header class="w3-container w3-teal">
+  <h1>Agende R&aacute;pido - ACESSAR</h1>
+</header>
+
+<div class="w3-container w3-half w3-margin-top">
+<div class="w3-container w3-card-4">
+
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field w3-input">
+    <%= f.label :email, 'E-mail:' %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field w3-input">
+    <%= f.label :password, 'Senha:' %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="field w3-input">
+     <%= f.label :remember_me, 'Manter conectado:' %> 
+     <%= f.check_box :remember_me %>
+    </div>
+  <% end -%>
+
+  <button class="w3-button w3-block w3-teal w3-section w3-padding" type="submit">ENTRAR</button>
+<% end %>
+<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+<%= render "devise/shared/links" %>
+</div>
+</div>
+</div>
+

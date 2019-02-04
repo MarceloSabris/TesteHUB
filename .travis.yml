@@ -1,0 +1,30 @@
+language: ruby
+rvm:
+  - 2.5.1
+    #    deploy:
+
+services:
+  - postgresql
+
+before_script:
+  - cp config/database.yml.travis config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - gem install cucumber
+
+
+script:
+      - bundle exec rake db:create
+      - bundle exec rake db:migrate RAILS_ENV=test
+      - bundle exec rspec spec --color --format doc
+      #- bundle exec rake
+      # - bundle exec cucumber (temporariamente)
+
+# whitelist
+branches:
+  only:
+    - master
+#    - heroku-integration
+
+      #provider: heroku
+      #api_key:
+      # secure: "YOUR ENCRYPTED API KEY"
